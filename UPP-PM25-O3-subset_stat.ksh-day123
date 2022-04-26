@@ -1,0 +1,243 @@
+#!/bin/ksh
+#
+
+set -xv
+
+# ---- Get grib data at certain record # ----------------------
+#
+#  subset $field & ":1 hybrid level" and append all time together
+#
+
+CYCLES=2019080612
+CYCLESx=`ndate -24 $CYCLES`
+
+name=POST-UPP-INPUT
+
+field1=PMTF
+field2=OZCON
+field3='1 hybrid level'
+
+fname1=day1-${name}-${field1}.grib2
+fname1s=day1-${name}-${field2}.grib2
+fname1x=day1-${name}-${field2}_8hrmax.grib2
+
+fname2=day2-${name}-${field1}.grib2
+fname2s=day2-${name}-${field2}.grib2
+fname2x=day2-${name}-${field2}_8hrmax.grib2
+
+fname3=day3-${name}-${field1}.grib2
+fname3s=day3-${name}-${field2}.grib2
+fname3x=day3-${name}-${field2}_8hrmax.grib2
+
+
+#----------------------------------------------------------
+#---- locate the post data and get the necessary 04Z-04Z
+#----------------------------------------------------------
+
+postdir=/gpfs/dell2/emc/modeling/noscrub/Hsin-Mu.Lin/test_cmaq13_a/post_fv3_${CYCLES}
+postdirx=/gpfs/dell2/emc/modeling/noscrub/Hsin-Mu.Lin/test_cmaq13_a/post_fv3_${CYCLESx}
+
+
+#========================================
+#=== Day1
+
+#---- previous cycle (fill the gap of day1)
+##--- for 12Z cycle
+
+if [ -d $postdirx ]; then
+
+let istart1=17
+let iend1=24
+
+let ix=$istart1
+
+while [ $ix -le $iend1 ]; do
+  let i2=ix
+
+  typeset -Z2 i2
+  file=NATLEV${i2}.tm00
+  # typeset -Z3 i2
+  # file=rrfs.t12z.natlevf${i2}.tm00.grib2
+
+   if [ $i2 -eq $istart1 ]; then
+     wgrib2 $postdirx/$file -match ":$field1" -match ":$field3" -GRIB $fname1
+     wgrib2 $postdirx/$file -match ":$field2" -match ":$field3" -GRIB $fname1s
+   else
+     wgrib2 $postdirx/$file -match ":$field1" -match ":$field3" -append -GRIB $fname1
+     wgrib2 $postdirx/$file -match ":$field2" -match ":$field3" -append -GRIB $fname1s
+   fi
+
+  let ix=ix+1
+done      # while
+
+#===== O3 8hr max
+
+let istart2=10   # extra hourly for O3 8 hours max calculation
+let iend2=24
+
+let ix=$istart2
+
+while [ $ix -le $iend2 ]; do
+  let i2=ix
+
+  typeset -Z2 i2
+  file=NATLEV${i2}.tm00
+  # typeset -Z3 i2
+  # file=rrfs.t12z.natlevf${i2}.tm00.grib2
+
+   if [ $i2 -eq $istart2 ]; then
+     wgrib2 $postdirx/$file -match ":$field2" -match ":$field3" -GRIB $fname1x
+   else
+     wgrib2 $postdirx/$file -match ":$field2" -match ":$field3" -append -GRIB $fname1x
+   fi
+
+  let ix=ix+1
+done      # while
+
+#---- current cycle (part of day1 & full day2)
+##--- for 12Z cycle
+
+#=== Day1 part from current cycle
+
+let istart=1
+let iend=16
+
+let i=$istart
+
+while [ $i -le $iend ]; do
+  let i2=i
+
+  typeset -Z2 i2
+  file=NATLEV${i2}.tm00
+  # typeset -Z3 i2
+  # file=rrfs.t12z.natlevf${i2}.tm00.grib2
+
+   if [ $i2 -eq $istart ]; then
+     wgrib2 $postdir/$file -match ":$field1" -match ":$field3" -append -GRIB $fname1
+     wgrib2 $postdir/$file -match ":$field2" -match ":$field3" -append -GRIB $fname1s
+     wgrib2 $postdir/$file -match ":$field2" -match ":$field3" -append -GRIB $fname1x
+   else
+     wgrib2 $postdir/$file -match ":$field1" -match ":$field3" -append -GRIB $fname1
+     wgrib2 $postdir/$file -match ":$field2" -match ":$field3" -append -GRIB $fname1s
+     wgrib2 $postdir/$file -match ":$field2" -match ":$field3" -append -GRIB $fname1x
+   fi
+
+  let i=i+1
+done      # while
+
+fi    ### $postdirx: previous day exist
+
+
+#========================================
+#=== Day2 full
+
+let istart=17
+let iend=40
+
+let i=$istart
+
+while [ $i -le $iend ]; do
+  let i2=i
+
+  typeset -Z2 i2
+  file=NATLEV${i2}.tm00
+  # typeset -Z3 i2
+  # file=rrfs.t12z.natlevf${i2}.tm00.grib2
+
+   if [ $i2 -eq $istart ]; then
+     wgrib2 $postdir/$file -match ":$field1" -match ":$field3"  -GRIB $fname2
+     wgrib2 $postdir/$file -match ":$field2" -match ":$field3"  -GRIB $fname2s
+   else
+     wgrib2 $postdir/$file -match ":$field1" -match ":$field3" -append -GRIB $fname2
+     wgrib2 $postdir/$file -match ":$field2" -match ":$field3" -append -GRIB $fname2s
+   fi
+
+  let i=i+1
+done      # while
+
+#===== O3 8hr max
+
+let istart=10
+let iend=40
+
+let i=$istart
+
+while [ $i -le $iend ]; do
+  let i2=i
+
+  typeset -Z2 i2
+  file=NATLEV${i2}.tm00
+  # typeset -Z3 i2
+  # file=rrfs.t12z.natlevf${i2}.tm00.grib2
+
+   if [ $i2 -eq $istart ]; then
+     wgrib2 $postdir/$file -match ":$field2" -match ":$field3"  -GRIB $fname2x
+   else
+     wgrib2 $postdir/$file -match ":$field2" -match ":$field3" -append -GRIB $fname2x
+   fi
+
+  let i=i+1
+done      # while
+
+
+#========================================
+#=== Day3 full
+
+let istart=41
+let iend=64
+
+let i=$istart
+
+while [ $i -le $iend ]; do
+  let i2=i
+
+  typeset -Z2 i2
+  file=NATLEV${i2}.tm00
+  # typeset -Z3 i2
+  # file=rrfs.t12z.natlevf${i2}.tm00.grib2
+
+   if [ $i2 -eq $istart ]; then
+     wgrib2 $postdir/$file -match ":$field1" -match ":$field3"  -GRIB $fname3
+     wgrib2 $postdir/$file -match ":$field2" -match ":$field3"  -GRIB $fname3s
+   else
+     wgrib2 $postdir/$file -match ":$field1" -match ":$field3" -append -GRIB $fname3
+     wgrib2 $postdir/$file -match ":$field2" -match ":$field3" -append -GRIB $fname3s
+   fi
+
+  let i=i+1
+done      # while
+
+#===== O3 8hr max
+
+let istart=34
+let iend=64
+
+let i=$istart
+
+while [ $i -le $iend ]; do
+  let i2=i
+
+  typeset -Z2 i2
+  file=NATLEV${i2}.tm00
+  # typeset -Z3 i2
+  # file=rrfs.t12z.natlevf${i2}.tm00.grib2
+
+   if [ $i2 -eq $istart ]; then
+     wgrib2 $postdir/$file -match ":$field2" -match ":$field3"  -GRIB $fname3x
+   else
+     wgrib2 $postdir/$file -match ":$field2" -match ":$field3" -append -GRIB $fname3x
+   fi
+
+  let i=i+1
+done      # while
+
+
+#--------------------------------------
+
+#################################################
+## ---- excute the stat -----
+
+ ./PM25-stat
+ ./O3-stat
+
+exit
