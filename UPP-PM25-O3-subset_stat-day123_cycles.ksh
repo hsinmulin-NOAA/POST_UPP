@@ -55,12 +55,14 @@ export fname3x=day3-${name}-${field2}_8hrmax.grib2
 #---- locate the post data and get the necessary 04Z-04Z
 #----------------------------------------------------------
 
-export postdir=/lfs/h2/emc/ptmp/jianping.huang/para/com/aqm/v7.0/aqm.v7.0.a1/${CYCLES}/postprd
-export postdirx24=/lfs/h2/emc/ptmp/jianping.huang/para/com/aqm/v7.0/aqm.v7.0.a1/${CYCLESx24}/postprd
-export postdirx18=/lfs/h2/emc/ptmp/jianping.huang/para/com/aqm/v7.0/aqm.v7.0.a1/${CYCLESx18}/postprd
-export postdirx12=/lfs/h2/emc/ptmp/jianping.huang/para/com/aqm/v7.0/aqm.v7.0.a1/${CYCLESx12}/postprd
-export postdirx06=/lfs/h2/emc/ptmp/jianping.huang/para/com/aqm/v7.0/aqm.v7.0.a1/${CYCLESx06}/postprd
+postdata=/lfs/h2/emc/ptmp/jianping.huang/para/com/aqm/v7.0/aqm.v7.0.a1
 
+export postdir=${postdata}/${CYCLES}/postprd
+
+export postdirx24=${postdata}/${CYCLESx24}/postprd
+export postdirx18=${postdata}/${CYCLESx18}/postprd
+export postdirx12=${postdata}/${CYCLESx12}/postprd
+export postdirx06=${postdata}/${CYCLESx06}/postprd
 
 #========================================
 
