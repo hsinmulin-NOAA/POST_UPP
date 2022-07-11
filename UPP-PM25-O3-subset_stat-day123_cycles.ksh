@@ -67,57 +67,51 @@ export postdirx06=${postdata}/${CYCLESx06}/postprd
 #========================================
 
 if [ $CYC -eq 18 ]; then
-  if [ -d $postdirx06 ]; then
-    if [ -d $postdirx12 ]; then
-      if [ -d $postdirx18 ]; then
-        UPP-PM25-O3-subset_stat-18Z.ksh
+  if [ -d $postdirx24 ]; then
+    if [ -d $postdirx18 ]; then
+      if [ -d $postdirx12 ]; then
+        if [ -d $postdirx06 ]; then
+          UPP-PM25-O3-subset_stat-${CYC}Z.ksh
+	fi
       fi
     fi
   else
-    if [ -d $postdirx24 ]; then
-      UPP-PM25-O3-subset_stat-12Z_2_12Z.ksh
-    fi
+    UPP-PM25-O3-subset_stat-${CYC}Z_2_${CYC}Z.ksh
   fi
 fi
 
 if [ $CYC -eq 12 ]; then
-  if [ -d $postdirx06 ]; then
+  if [ -d $postdirx18 ]; then
     if [ -d $postdirx12 ]; then
-      if [ -d $postdirx18 ]; then
-        UPP-PM25-O3-subset_stat-12Z.ksh
+      if [ -d $postdirx06 ]; then
+        UPP-PM25-O3-subset_stat-${CYC}Z.ksh
       fi
     fi
   else  
     if [ -d $postdirx24 ]; then
-      UPP-PM25-O3-subset_stat-12Z_2_12Z.ksh
+      UPP-PM25-O3-subset_stat-${CYC}Z_2_${CYC}Z.ksh
     fi
   fi 
 fi
 
 if [ $CYC -eq 6 ]; then
-  if [ -d $postdirx06 ]; then
-    if [ -d $postdirx12 ]; then
-      if [ -d $postdirx18 ]; then
-        UPP-PM25-O3-subset_stat-06Z.ksh
-      fi
+  if [ -d $postdirx12 ]; then
+    if [ -d $postdirx06 ]; then
+      UPP-PM25-O3-subset_stat-${CYC}Z.ksh
     fi
   else
     if [ -d $postdirx24 ]; then
-      UPP-PM25-O3-subset_stat-06Z_2_06Z.ksh
+      UPP-PM25-O3-subset_stat-${CYC}Z_2_${CYC}Z.ksh
     fi
   fi
 fi
 
 if [ $CYC -eq 00 ]; then
   if [ -d $postdirx06 ]; then
-    if [ -d $postdirx12 ]; then
-      if [ -d $postdirx18 ]; then
-        UPP-PM25-O3-subset_stat-00Z.ksh
-      fi
-    fi
+    UPP-PM25-O3-subset_stat-${CYC}Z.ksh
   else
     if [ -d $postdirx24 ]; then
-      UPP-PM25-O3-subset_stat-00Z_2_00Z.kshxxx
+      UPP-PM25-O3-subset_stat-${CYC}Z_2_${CYC}Z.kshxxx
     fi
   fi
 fi
