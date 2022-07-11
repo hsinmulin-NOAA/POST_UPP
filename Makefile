@@ -7,8 +7,8 @@ F_FLAGS   = -no-wrap-margin -qopenmp
 
 FC        = ftn 
 
-LIBS      = "-L./lib/lib -lwgrib2 -lgfortran -ldl -lz -lm"
-INC       = "-I./lib/lib"
+LIBS      = ${WGRIB2_LIB}
+INC       = -I${WGRIB2_INC}
 
 $(TARGET1): $(OBJECTS1)
 	$(FC) $(F_FLAGS) -o $@ $(INC) $(OBJECTS1) $(LIBS)

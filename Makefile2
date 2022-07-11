@@ -2,7 +2,7 @@ TARGET2   =  O3-stat
 
 OBJECTS2   = O3-stat.f90
 
-#F_FLAGS   = -O -FR -no-wrap-margin -qopenmp
+# F_FLAGS   = -O -FR -no-wrap-margin -qopenmp
 F_FLAGS   = -no-wrap-margin -qopenmp
 
 FC        = ftn 
