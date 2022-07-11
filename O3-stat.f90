@@ -13,7 +13,11 @@
       character (len=200) :: output1, output2
       character (len=99)  :: invline, ihrx, nhrx, invlinex
 
-!----------------------
+!===================================================================
+! ** open time step file
+!===================================================================
+
+      open(9,file='meta_time-step.txt', form='formatted')
 
 !===================================================================
 ! ** note: input files (file1, file2, file3) are pre-processed to
@@ -107,8 +111,11 @@
 
 ! write day1 metadata
 
-      ihrs=17
-      nhrs=16
+      read (9,*) ihrs
+      read (9,*) nhrs
+
+      ! ihrs=17
+      ! nhrs=16
 
       write(ihrx,*) ihrs
       write(nhrx,*) nhrs
@@ -190,8 +197,11 @@
 
 ! append day2 metadata
 
-      ihrs=17
-      nhrs=40
+      read (9,*) ihrs
+      read (9,*) nhrs
+
+      ! ihrs=17
+      ! nhrs=40
 
       write(ihrx,*) ihrs
       write(nhrx,*) nhrs
@@ -275,8 +285,11 @@
 
 ! append day3 metadata
 
-      ihrs=41
-      nhrs=64
+      read (9,*) ihrs
+      read (9,*) nhrs
+
+      ! ihrs=41
+      ! nhrs=64
 
       write(ihrx,*) ihrs     ! should be "ihrs", temporary used toatch the MetPlus criteria
       write(nhrx,*) nhrs
@@ -289,6 +302,8 @@
       if (iret.ne.0) stop 9
 
 88    continue
+
+      close(9) 
 
       stop
       end
