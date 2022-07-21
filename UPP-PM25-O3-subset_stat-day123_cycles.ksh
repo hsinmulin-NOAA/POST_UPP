@@ -124,4 +124,13 @@ fi
  ./PM25-stat
  ./O3-stat
 
+#################################################
+## --- Change default file name to $CYC related
+
+mv aqm.t12z.max_1hr_o3.grib2 aqm.t${CYC}z.max_1hr_o3.grib2
+mv aqm.t12z.max_8hr_o3.grib2 aqm.t${CYC}z.max_8hr_o3.grib2
+
+mv aqm.t12z.ave_24hr_pm25.grib2 aqm.t${CYC}z.ave_24hr_pm25.grib2
+mv aqm.t12z.max_1hr_pm25.grib2 aqm.t${CYC}z.max_1hr_pm25.grib2
+
 exit
